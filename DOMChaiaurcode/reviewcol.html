@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Collector</title>
+</head>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #121212;
+        color: #eee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 10px;
+
+    }
+    .container {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 7px rgba(255, 255, 255, 0.3);
+        width: 400px;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #0ff;
+    }
+    textarea {
+        width: 100%;
+        height: 80px;
+        padding: auto;
+        border: none;
+        border-radius: 8px;
+        resize: none;
+        background: #000;
+        color: #0ff;
+        font-size: 14px;
+        box-shadow: inset 0 0 7px rgba(255, 255, 255, 0.3);
+    }
+    button {
+        margin-top: 10px;
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        background: #27ae60;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    button:hover {
+        background: #2ecc71;
+        box-shadow: 0 0 8px rgba(39, 174, 96, 0.8);
+    }
+    .reviews {
+        margin-top: 20px;
+        background: #111;
+        padding: 10px;
+        border-radius: 8px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .reviews h3{
+        margin: 0 0 10px;
+        text-align: center;
+        font-size: 16px;
+        color: #0ff;
+        text-shadow: 0 0 5px #0ff;
+    }
+    .review-item {
+        background: #1e1e1e;
+        padding: 8px;
+        margin: 6px 0;
+        border-radius: 6px;
+        color: #ddd;
+        font-size: 14px;
+        border-left: 3px solid #0ff;
+    }
+    
+</style>
+<body>
+    <div class="container">
+        <h2>Review Collector</h2>
+        <textarea id="reviewInput" placeholder="Write your review here..."></textarea>
+        <button id="submitBtn">Submit Review</button>
+
+        <div class="reviews" id="reviewsSection">
+            <h3>Previous Reviews</h3>
+            <div id="reviewsList"></div>
+        </div>
+    </div>
+
+
+
+    <script>
+        const reviewInput = document.getElementById("reviewInput");
+        const submitBtn = document.getElementById("submitBtn");
+        const reviewsList = document.getElementById("reviewsList");
+
+
+        // Load reviews from localStorage
+        window.onload = () => {
+            const storedReviews = JSON.parse(localStorage.getItem("reviews")) || [];
+            storedReviews.forEach(review => addReviewToDOM(review,flase));
+        };
+
+
+        // Submit review
+        submitBtn.addEventListener("click", () => {
+            const reviewText = reviewInput.value.trim();
+            if (reviewText !== "") {
+                addReviewToDOM(reviewText, true);
+                reviewInput.value = "";
+            }
+        });
+
+
+        // Function to add review to DOM + storage
+        function addReviewToDOM(text, save) {
+            const reviewItem = document.createElement("div");
+            reviewItem.classList.add("review-item");
+            reviewItem.textContent = text;
+
+
+            // Add new review at the top
+            reviewsList.prepend(reviewItem);
+
+
+            // Save to localStorage
+            if(save) {
+                const storedReviews = JSON.parse(localStorage.getItem("reviews")) || [];
+                storedReviews.unshift(text);
+                localStorage.setItem("reviews",JSON.stringify(storedReviews)); 
+            }
+        }
+    </script>
+</body>
+</html>

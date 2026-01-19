@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Website</title>
+    <style>
+        body{
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+        }
+        header{
+            background: #02ff3d;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        nav{
+            text-align: center;
+            padding: 10px;
+        }
+        nav a{
+            text-decoration: none;
+            color: rgb(86, 2, 255);
+            padding: 10px;
+            margin: 0 15px;
+        }
+        .container{
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        main{
+            flex: 2;
+            padding-right: 20px;
+        }
+        aside{
+            flex: 1;
+            background: #f4f4f4;
+            padding: 10px;
+        }
+        footer{
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> My simple Website</h1>
+        <nav aria-label="Main Navigation">
+            <a href="#Home">Home</a>
+            <a href="#About">About</a>
+            <a href="#Contact">Contact</a>
+            <a href="#Services">Services</a>
+        </nav>
+    </header>
+    <div class="container">
+        <main>
+            <section>
+                <h2>Main Section</h2>
+                <article>
+                    <h3>Article Title</h3>
+                    <p>THis is an example article eith some contact.</p>
+
+                </article>
+            </section>
+        </main>
+        <aside>
+            <h3>Related Link</h3>
+            <ul>
+                <li><a href="#">Link1</a></li>
+                <li><a href="#">Link2</a></li>
+                <li><a href="#">Link3</a></li>
+            </ul>
+        </aside>
+    </div>
+    <div class="container">
+        <main>
+            <article>
+                <header>
+                    <h2>Blog Post Title</h2>
+                    <p>Published on March 26, 2025</p>
+                </header>
+                <p>This is an example blog post with meaningful content. It demonstrates the use of semantic HTML elements such as <code>article</code>, <code>header</code>, and <code>footer</code> to structure a blog post effectively.</p>
+                <footer>
+                    <p>Author: John Doe</p>
+                </footer>
+            </article>
+        </main>
+        <aside>
+            <h3>Related Posts</h3>
+            <ul>
+                <li><a href="#">Post 1</a></li>
+                <li><a href="#">Post 2</a></li>
+                <li><a href="#">Post 3</a></li>
+            </ul>
+        </aside>
+    </div>
+    <footer>
+        <p>&copy 2025 My Simple Website. All rights reserved.</p>
+    </footer>
+    <video
+        controls
+        src="https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4"
+        poster="https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217"
+        width="620">
+        Sorry, your browser doesn't support embedded videos, but don't worry, you can
+        <a href="https://archive.org/details/BigBuckBunny_124">download it</a>
+        and watch it with your favorite video player!
+    </video>
+    <video 
+        controls
+        src="https://videos.pexels.com/video-files/2178545/2178545-hd_1280_720_24fps.mp4"
+        poster="https://plus.unsplash.com/premium_photo-1661962990710-cb69abc29e36?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        width="650">
+        Sorry, your browser doesn't suppport embedded videos, but don't worry, you can
+    <a href="https://videos.pexels.com/video-files/2178545/2178545-hd_1280_720_24fps.mp4">Download it</a>
+    and watch it with your favorite videos player!
+     </video>
+
+    <audio controls>
+        <source src="./theme-demo-v02-63144.mp3" type="audio/mpeg">
+        Sorry, your browser doesn't support embedded audio, but don't worry, you can
+    </audio> 
+    <audio controls>
+        <source src="./theme-demo-v02-63144.mp3" type="audio/ogg">
+        Sorry, your browser doesn't support embedded audio, but don't worry, you can
+    </audio> 
+    <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/vlDOjTaaEdA?si=mchz2enEQRpVP0tL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen> </iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/vlDOjTaaEdA?si=mchz2enEQRpVP0tL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <table border="1">
+        <tr>
+            <th>Format</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>MP4</td>
+            <td>Video</td>
+            <td>One of the most widely used video formats, supported by most devices and platforms. It provides high-quality video with good compression.</td>
+        </tr>
+        <tr>
+            <td>WebM</td>
+            <td>Video</td>
+            <td>A format designed for web use, providing efficient compression and high-quality video, optimized for HTML5 video streaming.</td>
+        </tr>
+        <tr>
+            <td>AVI</td>
+            <td>Video</td>
+            <td>An older video format developed by Microsoft, known for high quality but larger file sizes.</td>
+        </tr>
+        <tr>
+            <td>MP3</td>
+            <td>Audio</td>
+            <td>A popular audio format with lossy compression, widely used for music and streaming due to its small file size.</td>
+        </tr>
+        <tr>
+            <td>WAV</td>
+            <td>Audio</td>
+            <td>A high-quality, uncompressed audio format commonly used for professional audio recording and editing.</td>
+        </tr>
+        <tr>
+            <td>AAC</td>
+            <td>Audio</td>
+            <td>A format that offers better sound quality than MP3 at similar bit rates, commonly used by Apple devices and YouTube.</td>
+        </tr>
+    </table>
+    
+</body>
+</html>
+
+

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        /* Basic styles for the whole page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            /* Center everything on the page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* The main box holding the game */
+        .game-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* Game title and subtitle */
+        h1 {
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* The input box for guesses */
+        #guessInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            /* Makes sure padding doesn't affect width */
+        }
+
+        /* The button style */
+        .btn {
+            width: 100%;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #guessButton {
+            background-color: #007bff;
+            /* Blue */
+        }
+
+        #guessButton:hover {
+            background-color: #0056b3;
+        }
+
+        #restartButton {
+            background-color: #28a745;
+            /* Green */
+        }
+
+        #restartButton:hover {
+            background-color: #1e7e34;
+        }
+
+        /* The feedback message (e.g., "Too high!", "Correct!") */
+        #message {
+            margin-top: 24px;
+            font-size: 18px;
+            font-weight: 500;
+            min-height: 27px;
+            /* Prevents layout jump when message appears */
+        }
+
+        /* Styles for different message types */
+        .message-correct {
+            color: #28a745;
+        }
+
+        /* Green for correct */
+        .message-wrong {
+            color: #dc3545;
+        }
+
+        /* Red for wrong */
+        .message-hint {
+            color: #007bff;
+        }
+
+        /* Blue for hints */
+        .message-warning {
+            color: #ffc107;
+        }
+
+        /* Yellow for warnings */
+
+        /* The container for previous guess bubbles */
+        #previousGuesses {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+            min-height: 30px;
+        }
+
+        /* The little bubbles for each previous guess */
+        .guess-bubble {
+            background-color: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 15px;
+        }
+
+        /* Text for remaining attempts */
+        .attempts-text {
+            margin-top: 16px;
+        }
+
+        /* The number of attempts left */
+        #attempts {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        /* A simple class to hide elements */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- This is the main container for our game -->
+    <div class="game-container">
+        <h1>Guess The Number!</h1>
+        <p>I'm thinking of a number between 1 and 100.</p>
+
+        <!-- This div holds the input field and guess button -->
+        <div id="game-active">
+            <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
+            <button id="guessButton" class="btn">Guess</button>
+        </div>
+
+        <!-- This div shows feedback to the user -->
+        <div id="game-feedback">
+            <p id="message"></p>
+
+            <div>
+                <p>Previous Guesses:</p>
+                <div id="previousGuesses">
+                    <!-- Previous guesses will be added here by JavaScript -->
+                </div>
+            </div>
+
+            <p class="attempts-text">
+                Remaining Attempts: <span id="attempts">10</span>
+            </p>
+        </div>
+
+        <!-- This div holds the "Play Again" button, hidden at the start -->
+        <div id="restart-section" class="hidden">
+            <button id="restartButton" class="btn">Play Again</button>
+        </div>
+    </div>
+
+     <script>
+        // --- JAVASCRIPT LOGIC ---
+
+        // These variables will hold the game's data
+        let randomNumber;      // The secret number the computer picks
+        let attemptsLeft;      // How many guesses the player has left
+        let previousGuesses;   // A list to store the numbers the player has already guessed
+
+        // These variables are links to the HTML elements we want to control
+        const guessInput = document.getElementById('guessInput');
+        const guessButton = document.getElementById('guessButton');
+        const message = document.getElementById('message');
+        const attemptsDisplay = document.getElementById('attempts');
+        const previousGuessesDisplay = document.getElementById('previousGuesses');
+        const restartSection = document.getElementById('restart-section');
+        const restartButton = document.getElementById('restartButton');
+        const gameActiveSection = document.getElementById('game-active');
+
+        // This function sets up a new game or resets the current one
+        function newGame() {
+            // Pick a random number between 1 and 100
+            randomNumber = Math.floor(Math.random() * 10) + 1;
+            // Reset attempts and previous guesses
+            attemptsLeft = 10;
+            previousGuesses = [];
+
+            // Reset the text and appearance of our HTML elements
+            message.textContent = '';
+            message.className = '';
+            attemptsDisplay.textContent = attemptsLeft;
+            previousGuessesDisplay.innerHTML = ''; // Clear old guess bubbles
+            guessInput.value = '';
+            
+            // Re-enable the input and button
+            guessInput.disabled = false;
+            guessButton.disabled = false;
+            
+            // Hide the "Play Again" button and show the guessing area
+            restartSection.classList.add('hidden');
+            gameActiveSection.classList.remove('hidden');
+            
+            // Put the cursor in the input box automatically
+            guessInput.focus();
+        }
+
+        // This function runs every time the player makes a guess
+        function handleGuess() {
+            // Get the player's guess from the input box and turn it into a number
+            const userGuess = parseInt(guessInput.value);
+
+            // --- VALIDATION CHECKS ---
+            // Check if the input is not a number or is outside the 1-100 range
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 10) {
+                displayMessage('Please enter a number between 1 and 100.', 'warning');
+                return; // Stop the function here
+            }
+            
+            // Check if the number has already been guessed using a FOR loop
+            let alreadyGuessed = false;
+            for (let i = 0; i < previousGuesses.length; i++) {
+                if (previousGuesses[i] === userGuess) {
+                    alreadyGuessed = true;
+                    break; // Exit the loop early since we found a match
+                }
+            }
+
+            if (alreadyGuessed) {
+                displayMessage('You already guessed that number!', 'warning');
+                guessInput.value = ''; // Clear the input box
+                return; // Stop the function
+            }
+            
+            // --- UPDATE GAME STATE ---
+            attemptsLeft = attemptsLeft - 1; // Use one attempt
+            previousGuesses.push(userGuess); // Add the guess to our list
+
+            // --- UPDATE THE SCREEN ---
+            attemptsDisplay.textContent = attemptsLeft; // Show new attempts count
+            addGuessBubble(userGuess); // Show the new guess as a bubble
+            
+            // --- CHECK THE GUESS ---
+            if (userGuess === randomNumber) {
+                displayMessage(`Correct! The number was ${randomNumber}!`, 'correct');
+                endGame(); // The player won, so end the game
+            } else if (userGuess < randomNumber) {
+                displayMessage('Too low! Try again.', 'hint');
+            } else {
+                displayMessage('Too high! Try again.', 'wrong');
+            }
+
+            // Check if the player is out of attempts
+            if (attemptsLeft === 0 && userGuess !== randomNumber) {
+                displayMessage(`Game Over! The number was ${randomNumber}.`, 'wrong');
+                endGame(); // The player lost, so end the game
+            }
+
+            // Clear the input box for the next guess
+            guessInput.value = '';
+            guessInput.focus();
+        }
+        
+        // A helper function to show a message to the player
+        function displayMessage(msg, type) {
+            message.textContent = msg; // Set the text content
+            message.className = `message-${type}`; // Set the color style
+        }
+        
+        // A helper function to create a new guess bubble
+        function addGuessBubble(guess) {
+            const bubble = document.createElement('span'); // Create a new <span> element
+            bubble.textContent = guess; // Set its text to the guessed number
+            bubble.className = 'guess-bubble'; // Give it the bubble style
+            previousGuessesDisplay.appendChild(bubble); // Add it to the display area
+        }
+
+        // This function is called when the game is over (win or lose)
+        function endGame() {
+            // Disable the input and button so the player can't guess anymore
+            guessInput.disabled = true;
+            guessButton.disabled = true;
+
+            // Hide the guessing area and show the "Play Again" button
+            gameActiveSection.classList.add('hidden');
+            restartSection.classList.remove('hidden');
+        }
+
+        // --- EVENT LISTENERS ---
+        // These tell the browser to run our functions when the player does something
+
+        // Run handleGuess function when the "Guess" button is clicked
+        guessButton.addEventListener('click', handleGuess);
+
+        // Run handleGuess function when the player presses "Enter" in the input box
+        guessInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                handleGuess();
+            }
+        });
+        
+        // Run newGame function when the "Play Again" button is clicked
+        restartButton.addEventListener('click', newGame);
+
+        // --- START THE GAME ---
+        // Call this function once when the page first loads to set everything up
+        newGame();
+    </script> 
+</body>
+
+</html>

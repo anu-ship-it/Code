@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex and Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #10c4d4;
+        }
+        
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            border: 2px solid #000;
+            height: 89px;
+        }
+        .flex-container > div {
+            background-color: #f00;
+            flex: 1 1 100px;
+            height: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="flex-container">
+        <div class="1">Item 1</div>
+        <div class="2">Item 2</div>
+        <div class="3">Item 3</div>
+        <div class="4">Item 4</div>
+        <div class="5">Item 5</div>
+        <div class="6">Item 6</div>
+        
+    </div>
+</body>
+</html>

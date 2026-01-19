@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black Aesthetic Calculator</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #121212;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #eee;
+    }
+    .calculator {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+      width: 300px;
+    }
+    #display {
+      width: 100%;
+      height: 60px;
+      margin-bottom: 15px;
+      text-align: right;
+      font-size: 26px;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #000;
+      color: #0ff;
+      box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.3);
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #2c2c2c;
+      color: #eee;
+      transition: 0.2s;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    }
+    button:hover {
+      background: #444;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    .operator { color: #f39c12; }
+    .equal { background: #27ae60; color: #fff; grid-column: span 2; }
+    .clear { background: #e74c3c; color: #fff; grid-column: span 2; }
+
+    /* History Section */
+    .history {
+      margin-top: 15px;
+      background: #111;
+      padding: 10px;
+      border-radius: 10px;
+      max-height: 150px;
+      overflow-y: auto;
+      font-size: 14px;
+      box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.2);
+    }
+    .history h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      text-align: center;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+    .history p {
+      margin: 5px 0;
+      padding: 5px;
+      background: #1e1e1e;
+      border-radius: 5px;
+      color: #bbb;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .history p:hover {
+      background: #222;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+    #clearHistoryBtn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #9b59b6;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #clearHistoryBtn:hover {
+      background: #8e44ad;
+      box-shadow: 0 0 10px rgba(155, 89, 182, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" disabled>
+    <div class="buttons">
+      <button class="clear">C</button>
+      <button class="operator">/</button>
+      <button class="operator">*</button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="operator">-</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button class="operator">+</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>0</button>
+      <button>.</button>
+      <button class="equal">=</button>
+    </div>
+
+    <div class="history" id="history">
+      <h3>History</h3>
+    </div>
+    <button id="clearHistoryBtn">Clear History</button>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const buttons = document.querySelectorAll("button");
+    const historyDiv = document.getElementById("history");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+    let currentInput = "";
+
+    function updateDisplay(value) {
+      currentInput += value;
+      display.value = currentInput;
+    }
+
+    function calculate() {
+      try {
+        const result = eval(currentInput);
+        if (result !== undefined) {
+          // Add to history
+          const historyItem = document.createElement("p");
+          historyItem.textContent = `${currentInput} = ${result}`;
+          // Click on history item to reuse
+          historyItem.addEventListener("click", () => {
+            currentInput = result.toString();
+            display.value = currentInput;
+          });
+          historyDiv.appendChild(historyItem);
+
+          // Keep only latest 10 results
+          const allHistory = historyDiv.querySelectorAll("p");
+          if (allHistory.length > 10) {
+            historyDiv.removeChild(allHistory[0]);
+          }
+
+          currentInput = result.toString();
+          display.value = currentInput;
+        }
+      } catch {
+        display.value = "Error";
+        currentInput = "";
+      }
+    }
+
+    function clearAll() {
+      currentInput = "";
+      display.value = "";
+    }
+
+    // Clear History function
+    clearHistoryBtn.addEventListener("click", () => {
+      historyDiv.querySelectorAll("p").forEach(p => p.remove());
+    });
+
+    // Button clicks
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const value = button.textContent;
+
+        if (value === "C") {
+          clearAll();
+        } 
+        else if (value === "=") {
+          calculate();
+        } 
+        else if (value !== "Clear History") {
+          updateDisplay(value);
+        }
+      });
+    });
+
+    // Keyboard input
+    document.addEventListener("keydown", (event) => {
+      const key = event.key;
+
+      if (!isNaN(key) || ["+", "-", "*", "/", "."].includes(key)) {
+        updateDisplay(key);
+      } 
+      else if (key === "Enter") {
+        calculate();
+      } 
+      else if (key === "Backspace") {
+        currentInput = currentInput.slice(0, -1);
+        display.value = currentInput;
+      } 
+      else if (key.toLowerCase() === "c") {
+        clearAll();
+      }
+    });
+  </script>
+</body>
+</html>

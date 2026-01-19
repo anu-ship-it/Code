@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<style>
+    /* An event is triggered when a user clickd on the #button elements */
+    /* Which then sets the #button element's background-color to blue */
+</style>
+<body>
+   <script>
+    $('#button').on('click', event => {
+        $(event.currentTarget).css('background-color','blue');
+    });
+   </script>
+</body>
+</html>
+
+ 
+

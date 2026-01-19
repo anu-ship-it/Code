@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button</title>
+</head>
+
+<body>
+    <h1>DOM for Buttons</h1>
+    <button id="example-button">You have not clicked this button.</button>
+    <button id="reset-button">Click this button to reset the first button.</button>
+    <h2>This document was last modified
+    <span id="demo"></span>.
+    </h2>
+    <br/>
+    <br/>
+    <hr/>
+    <h3> Finding HTML Elements Using document.forms</h3>
+    <br>
+    <form action="">
+        First name: <input type="text" name="fname" value="Donald">
+        <input type="submit" value="submit">
+    </form>
+
+    <p id="de"></p>
+
+
+
+
+    <script>
+        const buttonToBeClicked = document.getElementById("example-button");
+
+        const resetButton = document.getElementById("reset-button");
+
+        // the text that the button is initialized with
+        const initialText = buttonToBeClicked.textContent;
+
+        // the text that the button contains after being clicked
+        const clickedText = "You have clicked this button.";
+
+        // we hoist the event listener callback function
+        // to prevent having duplicate listeners attached
+        function eventListener() {
+            buttonToBeClicked.textContent = clickedText;
+        }
+
+        function addListener() {
+            buttonToBeClicked.addEventListener("click", eventListener, {
+                passive: true,
+                once: true,
+            });
+        }
+
+        // when the reset button is clicked, the example button is reset,
+        // and allowed to have its state updated again
+        resetButton.addEventListener("click", () => {
+            buttonToBeClicked.textContent = initialText;
+            addListener();
+        });
+
+        addListener();
+
+        document.getElementById("demo").innerHTML = document.lastModified;
+
+
+        document.getElementById("de").innerHTML = "Number of forms: " + document.forms.length;
+    </script>
+    
+</body>
+</html>

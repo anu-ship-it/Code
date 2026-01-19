@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Sentinel-RootFixed",
+  "version": "1.0.1",
+  "description": "YouTube ad blocker (root-fixed architecture for stability).",
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "*://*.googlevideo.com/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "ui/popup.html",
+    "default_icon": {
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "options_page": "ui/options.html",
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": [
+        "content/observer.js",
+        "content/detector.js",
+        "content/skipper.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
