@@ -1,5 +1,6 @@
 # Use Hugging Face in which we have to use transformer lib. From which we have to summeries the paragraph which we will give to it.from transformers import pipeline
 from sklearn import pipeline
+from transformers import pipeline
 def summarize_text_huggingface(text, model_name="facebook/bart-large-cnn"):
     """
     Summarizes the given text using a Hugging Face transformer model.
